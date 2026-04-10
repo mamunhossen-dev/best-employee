@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee of the Month Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-blue: #002d72;
+            --accent-gold: #c5a059;
+            --text-red: #b22222;
+            --circle-border: #7d85d0;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .award-card {
+            width: 500px;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            padding-bottom: 0;
+            border-radius: 8px;
+        }
+
+        .top-bar, .bottom-bar {
+            height: 80px;
+            background: var(--primary-blue);
+            width: 100%;
+            position: relative;
+        }
+
+        .top-bar {
+            clip-path: ellipse(100% 100% at 50% 0%);
+            border-bottom: 5px solid var(--accent-gold);
+        }
+
+        .bottom-bar {
+            clip-path: ellipse(100% 100% at 50% 100%);
+            border-top: 5px solid var(--accent-gold);
+            margin-top: 10px;
+        }
+
+        .content { padding: 0 20px; }
+        .company-name { color: var(--primary-blue); font-size: 1.4rem; margin: 15px 0 5px 0; font-weight: 600; }
+        .main-title { font-size: 2.2rem; font-weight: 900; margin: 0; color: #222; line-height: 1.1; }
+        .month { color: var(--text-red); font-size: 1.8rem; margin: 10px 0; font-weight: bold; }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 25px 0;
+        }
+
+        .profile-circle {
+            width: 240px;
+            height: 240px;
+            border: 6px solid var(--circle-border);
+            border-radius: 50%;
+            overflow: hidden;
+            background: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ribbon {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 70%, #fcf6ba 100%);
+            color: #1a1a1a;
+            padding: 10px 30px;
+            font-weight: 800;
+            white-space: nowrap;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            min-width: 280px;
+            font-size: 1.1rem;
+        }
+
+        .congrats {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin: 35px 0 20px 0;
+        }
+
+        .footer {
+            font-size: 0.75rem;
+            padding: 0 30px;
+            color: #444;
+            text-align: left;
+        }
+
+        .footer-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 10px;
+        }
+
+        .address-box { line-height: 1.4; flex: 1; margin: 0 15px; }
+        .qr-code img { width: 55px; height: 55px; background: #eee; }
+
+        .web-link {
+            text-align: right;
+            color: var(--text-red);
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Editor Section */
+        .editor {
+            margin-top: 30px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            flex: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            transition: 0.3s;
+        }
+
+        .btn-update { background: var(--primary-blue); color: white; }
+        .btn-save { background: #28a745; color: white; }
+        .btn-upload { background: #6c757d; color: white; }
+        button:hover { opacity: 0.85; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+    <div class="award-card" id="card-to-save">
+        <div class="top-bar"></div>
+
+        <div class="content">
+            <div class="company-name">HawarIT Ltd.</div>
+            <h1 class="main-title">BEST KAMLA<br>OF THE MONTH</h1>
+            <div class="month" id="displayMonth">March 2026</div>
+
+            <div class="image-container">
+                <div class="profile-circle">
+                    <img src="https://ui-avatars.com/api/?name=Employee&background=random&size=240" alt="Profile" id="profileImg">
+                </div>
+                <div class="ribbon" id="displayName">
+                    Employee Name
+                </div>
+            </div>
+
+            <p class="congrats">Congratulation for this achievement!</p>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-flex">
+                <div class="logo-area">
+                    <div class="logo-placeholder"><strong>HIT</strong></div>
+                </div>
+                <div class="address-box">
+                    <strong>HawarIT LIMITED</strong><br>
+                    Narsinghapur, Zirabo, Ashulia Dhaka-1341, Bangladesh<br>
+                    E-mail: info@hawarIT.com
+                </div>
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=55x55&data=https://www.hawarit.com" alt="QR">
+                </div>
+            </div>
+            <span class="web-link">www.hawarIT.com</span>
+        </footer>
+
+        <div class="bottom-bar"></div>
+    </div>
+
+    <div class="editor">
+        <div class="input-group">
+            <input type="text" id="newName" placeholder="Employee Name">
+            <input type="text" id="newMonth" placeholder="Month & Year">
+        </div>
+        
+        <div class="input-group">
+            <label for="imageUpload" style="font-size: 0.8rem; color: #666; width: 100%;">Upload Profile Picture:</label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+
+        <div class="button-group">
+            <button class="btn-update" onclick="updateCard()">Update Text</button>
+            <button class="btn-save" onclick="saveCard()">Save as Image</button>
+        </div>
+    </div>
+
+    <script>
+        // Handle image upload
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImg').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update name and month
+        function updateCard() {
+            const name = document.getElementById('newName').value;
+            const month = document.getElementById('newMonth').value;
+
+            if(name) document.getElementById('displayName').innerText = name;
+            if(month) document.getElementById('displayMonth').innerText = month;
+        }
+
+        // Save card as PNG
+        function saveCard() {
+            const card = document.getElementById('card-to-save');
+            
+            html2canvas(card, {
+                useCORS: true,
+                scale: 2,
+                backgroundColor: null
+            }).then(canvas => {
+                const image = canvas.toDataURL("image/png");
+                const link = document.createElement('a');
+                const fileName = document.getElementById('displayName').innerText.trim();
+                link.download = `Award-${fileName}.png`;
+                link.href = image;
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
